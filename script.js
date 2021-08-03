@@ -71,7 +71,7 @@ var evaluateComPlay = function () {
   } else if (playerSum > comSum) {
     return `${allCardsMessage}Sum of player cards are higher than that of computer's. The player wins! Refresh to play again.`;
   } else {
-    return `${allCardsMessage}Both player and computer have the same sum of cards. It is a tie! Refresd to play again.`;
+    return `${allCardsMessage}Both player and computer have the same sum of cards. It is a tie! Refresh to play again.`;
   }
 };
 
@@ -87,6 +87,7 @@ var outputAllCards = function () {
 
 //to add up the sum of cards
 var sumOfCards = function (cardArray) {
+  var acesOnHand = 0;
   var sum = 0;
   for (var count = 0; count < cardArray.length; count += 1) {
     if (
@@ -96,11 +97,24 @@ var sumOfCards = function (cardArray) {
     ) {
       sum += 10;
     } else if (cardArray[count] == "ace") {
+      //default ace value is 11
+      acesOnHand += 1;
       sum += 11;
     } else {
       sum += Number(cardArray[count]);
     }
   }
+
+  //convert aces to 1 if the sum exceeds 21
+  if (sum > 21) {
+    for (var count = 0; count < acesOnHand; count += 1) {
+      while (sum > 21 && acesOnHand > 0) {
+        acesOnHand -= 1;
+        sum -= 10;
+      }
+    }
+  }
+
   return sum;
 };
 
